@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.numero.model.NumeroModel;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -44,7 +45,6 @@ public class NumeroController {
 		boxControlloTentativi.setDisable(false);
 		txtMessaggi.clear();
 		txtTentativo.clear();
-		txtRimasti.setText(Integer.toString(model.getTMAX()));
 		
 		// Comunicazione al modello
 		model.newGame();
@@ -85,9 +85,6 @@ public class NumeroController {
 			txtMessaggi.appendText("Tentativo troppo ALTO\n");
 		}
 		
-		// Aggiornamento interfaccia numero tentativi rimasti
-				txtRimasti.setText(Integer.toString(model.getTMAX()-model.getTentativiFatti()));
-		
 		if(!model.isInGioco()) {
 			if(risultato != 0) {
 				txtMessaggi.appendText("Hai perso!");
@@ -110,6 +107,7 @@ public class NumeroController {
 
 	public void setModel(NumeroModel model) {
 		this.model = model;
+		txtRimasti.textProperty().bind(Bindings.convert(model.tentativiFattiProperty()));
 	}
 
 }

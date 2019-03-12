@@ -1,26 +1,34 @@
 package it.polito.tdp.numero.model;
 
 import java.security.InvalidParameterException;
+import java.util.LinkedList;
+import java.util.List;
+
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
 public class NumeroModel {
 	private final int NMAX = 100;
 	private final int TMAX = 8;
-
 	private int segreto;
-	private int tentativiFatti;
+	private IntegerProperty tentativiFatti;
 	private boolean inGioco;
+	private List<Integer> tentativi;
 	
 	public NumeroModel() {
 		this.inGioco = false;
+		this.tentativiFatti = new SimpleIntegerProperty();
+		this.tentativi = new LinkedList<Integer>();
 	}
 	
 	/**
 	 * Avvia nuova partita
 	 */
 	public void newGame() {
-		this.segreto = (int) (Math.random() * NMAX) + 1;
-		this.tentativiFatti = 0;
+		this.segreto = (int)(Math.random() * NMAX) + 1;
+		this.tentativiFatti.set(0);
 		this.inGioco = true;
+		this.tentativi.clear();
 	}
 	
 	/**
@@ -37,8 +45,10 @@ public class NumeroModel {
 			throw new InvalidParameterException(String.format("Devi inserire un numero tra %d e %d", 1, NMAX));
 		}
 		
-		this.tentativiFatti++;
-		if(this.tentativiFatti == this.TMAX) {
+		this.tentativiFatti.set(this.tentativiFatti.get() + 1);
+		this.tentativi.add(t);
+		
+		if(this.tentativiFatti.get() == this.TMAX) {
 			this.inGioco = false;
 		}
 		
@@ -55,6 +65,8 @@ public class NumeroModel {
 	public boolean tentativoValido(int t) {
 		if(t<1 || t>NMAX)
 			return false;
+		else if(this.tentativi.contains(t))
+			return false;
 		else
 			return true;
 	}
@@ -67,12 +79,23 @@ public class NumeroModel {
 		return segreto;
 	}
 
-	public int getTentativiFatti() {
-		return tentativiFatti;
-	}
-
 	public int getTMAX() {
 		return TMAX;
 	}
+
+	public IntegerProperty tentativiFattiProperty() {
+		return this.tentativiFatti;
+	}
+	
+
+	public int getTentativiFatti() {
+		return this.tentativiFattiProperty().get();
+	}
+	
+
+	public void setTentativiFatti(final int tentativiFatti) {
+		this.tentativiFattiProperty().set(tentativiFatti);
+	}
+	
 
 }
