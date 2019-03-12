@@ -2,6 +2,8 @@ package it.polito.tdp.numero;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import it.polito.tdp.numero.model.NumeroModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -9,6 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 
 public class NumeroController {
+	
+	private NumeroModel model;
 
 	private final int NMAX = 100;
 	private final int TMAX = 8;
@@ -63,14 +67,14 @@ public class NumeroController {
 		// Leggi il valore del tentativo
 		String ts = txtTentativo.getText();
 
-		// Controlla se è valido
+		// Controlla se ï¿½ valido
 
 		int tentativo ;
 		try {
 			tentativo = Integer.parseInt(ts);
 		} catch (NumberFormatException e) {
-			// la stringa inserita non è un numero valido
-			txtMessaggi.appendText("Non è un numero valido\n");
+			// la stringa inserita non ï¿½ un numero valido
+			txtMessaggi.appendText("Non ï¿½ un numero valido\n");
 			return ;
 		}
 		
@@ -122,4 +126,9 @@ public class NumeroController {
 		assert txtMessaggi != null : "fx:id=\"txtMessaggi\" was not injected: check your FXML file 'Numero.fxml'.";
 
 	}
+
+	public void setModel(NumeroModel model) {
+		this.model = model;
+	}
+
 }
