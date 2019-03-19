@@ -1,8 +1,8 @@
 package it.polito.tdp.numero.model;
 
 import java.security.InvalidParameterException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -13,12 +13,12 @@ public class NumeroModel {
 	private int segreto;
 	private IntegerProperty tentativiFatti;
 	private boolean inGioco;
-	private List<Integer> tentativi;
+	private Set<Integer> tentativi;
 	
 	public NumeroModel() {
 		this.inGioco = false;
 		this.tentativiFatti = new SimpleIntegerProperty();
-		this.tentativi = new LinkedList<Integer>();
+		this.tentativi = new HashSet<Integer>();
 	}
 	
 	/**
@@ -28,7 +28,7 @@ public class NumeroModel {
 		this.segreto = (int)(Math.random() * NMAX) + 1;
 		this.tentativiFatti.set(0);
 		this.inGioco = true;
-		this.tentativi.clear();
+		this.tentativi = new HashSet<Integer>();
 	}
 	
 	/**
@@ -46,7 +46,7 @@ public class NumeroModel {
 		}
 		
 		this.tentativiFatti.set(this.tentativiFatti.get() + 1);
-		this.tentativi.add(t);
+		this.tentativi.add(new Integer (t));
 		
 		if(this.tentativiFatti.get() == this.TMAX) {
 			this.inGioco = false;
@@ -65,7 +65,7 @@ public class NumeroModel {
 	public boolean tentativoValido(int t) {
 		if(t<1 || t>NMAX)
 			return false;
-		else if(this.tentativi.contains(t))
+		else if(this.tentativi.contains(new Integer (t)))
 			return false;
 		else
 			return true;
